@@ -1,0 +1,21 @@
+<div class="container mt-4">
+  <div *ngIf="errorMessage" class="alert alert-danger">{{ errorMessage }}</div>
+
+  <div *ngIf="product">
+    <h2>Детали за: {{ product.name }}</h2>
+    <ul class="list-group">
+      <li class="list-group-item"><strong>ID:</strong> {{ product.id }}</li>
+      <li class="list-group-item"><strong>Опис:</strong> {{ product.description }}</li>
+      <li class="list-group-item"><strong>Цена:</strong> {{ product.price }}</li>
+      <li class="list-group-item"><strong>Количина:</strong> {{ product.quantityInStock }}</li>
+      <li class="list-group-item"><strong>Категорија:</strong> {{ product.category || '-' }}</li>
+    </ul>
+
+    <div class="mt-4" *ngIf="product.imageData">
+      <h5>Слика:</h5>
+      <img [src]="product.imageData" class="img-thumbnail" style="max-width: 250px;">
+    </div>
+
+    <button class="btn btn-secondary mt-3" (click)="router.navigate(['/'])">Назад</button>
+  </div>
+</div>

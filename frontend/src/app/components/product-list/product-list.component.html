@@ -1,0 +1,68 @@
+<div class="container mt-4">
+  <h2>Сите производи</h2>
+
+  <div *ngIf="isLoading" class="alert alert-info">Се вчитува...</div>
+  <div *ngIf="errorMessage" class="alert alert-danger">{{ errorMessage }}</div>
+  <div *ngIf="successMessage" class="alert alert-success">{{ successMessage }}</div>
+
+  <div class="mb-3">
+    <input type="text"
+           class="form-control"
+           placeholder="Пребарај по име или категорија..."
+           [(ngModel)]="searchTerm">
+  </div>
+
+  <a class="btn btn-primary mb-3" routerLink="/add">+ Додади производ</a>
+
+  <table *ngIf="!isLoading && products.length > 0" class="table table-bordered table-striped">
+    <thead class="table-dark">
+    <tr>
+      <th>ID</th>
+      <th>Име</th>
+      <th>Цена</th>
+      <th>Количина</th>
+      <th>Категорија</th>
+      <th>Акции</th>
+      <th>Слика</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let product of paginatedProducts">
+      <td>{{ product.id }}</td>
+      <td>{{ product.name }}</td>
+      <td>{{ product.price }}</td>
+      <td>{{ product.quantityInStock }}</td>
+      <td>{{ product.category || '-' }}</td>
+      <td>
+        <a class="btn btn-info btn-sm me-1" [routerLink]="['/details', product.id]">Детали</a>
+        <a class="btn btn-warning btn-sm me-1" [routerLink]="['/edit', product.id]">Уреди</a>
+        <button class="btn btn-danger btn-sm" (click)="deleteProduct(product.id!)">Избриши</button>
+      </td>
+      <td>
+        <img *ngIf="product.imageData" [src]="product.imageData" style="max-width: 60px; max-height: 60px;">
+      </td>
+    </tr>
+    </tbody>
+  </table>
+
+  <nav *ngIf="totalItems > pageSize" class="mt-3">
+    <ul class="pagination justify-content-center">
+      <li class="page-item" [class.disabled]="page === 0">
+        <button class="page-link" (click)="onPageChange(page - 1)">«</button>
+      </li>
+      <li
+        class="page-item"
+        *ngFor="let i of [].constructor(Math.ceil(totalItems / pageSize)); let index = index"
+        [class.active]="page === index">
+        <button class="page-link" (click)="onPageChange(index)">{{ index + 1 }}</button>
+      </li>
+      <li class="page-item" [class.disabled]="(page + 1) * pageSize >= totalItems">
+        <button class="page-link" (click)="onPageChange(page + 1)">»</button>
+      </li>
+    </ul>
+  </nav>
+
+  <div *ngIf="!isLoading && products.length === 0" class="alert alert-warning">
+    Нема производи за прикажување.
+  </div>
+</div>

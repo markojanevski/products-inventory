@@ -1,0 +1,50 @@
+<div class="container mt-4">
+  <h2>{{ isEditMode ? 'Уреди производ' : 'Додади нов производ' }}</h2>
+
+  <div *ngIf="successMessage" class="alert alert-success">{{ successMessage }}</div>
+  <div *ngIf="errorMessage" class="alert alert-danger">{{ errorMessage }}</div>
+
+  <form #formRef="ngForm" (ngSubmit)="onSubmit()">
+    <div class="mb-3">
+      <label class="form-label">Име</label>
+      <input class="form-control" name="name" [(ngModel)]="product.name" required>
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Опис</label>
+      <textarea class="form-control" name="description" [(ngModel)]="product.description"></textarea>
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Цена</label>
+      <input type="number" class="form-control" name="price" [(ngModel)]="product.price" min="1" required>
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Количина</label>
+      <input type="number" class="form-control" name="quantityInStock" [(ngModel)]="product.quantityInStock" min="1" required>
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Категорија</label>
+      <input class="form-control" name="category" [(ngModel)]="product.category">
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Слика</label>
+      <input type="file" (change)="onFileSelected($event)" accept="image/*" class="form-control">
+    </div>
+
+    <div class="mb-3" *ngIf="product.imageData">
+      <img [src]="product.imageData" class="img-thumbnail" style="max-width: 200px;">
+    </div>
+
+
+    <div class="mb-3 mt-4">
+      <button type="submit" class="btn btn-primary me-2" [disabled]="formRef.invalid">
+        {{ isEditMode ? 'Зачувај' : 'Додади' }}
+      </button>
+      <a class="btn btn-secondary" routerLink="/">Назад</a>
+    </div>
+  </form>
+</div>
